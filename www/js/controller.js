@@ -169,14 +169,26 @@ const winMenu = [
       },
       ...updateMenu,
       {
+        label: 'Guide...',
+        click: () => {
+          main.openSecondaryWindow('helpWindow');
+        },
+      },
+      {
         label: 'Changelog...',
         click: () => {
-          main.openChangelog();
+          main.openSecondaryWindow('changelogWindow');
         },
       },
     ],
   },
   ...devMenu,
+  {
+    label: 'Donate',
+    click: () => {
+      electron.shell.openExternal('https://khalisfoundation.org/donate/');
+    },
+  },
 ];
 
 const macMenu = [
@@ -188,12 +200,6 @@ const macMenu = [
         role: 'about',
       },
       ...updateMenu,
-      {
-        label: 'Changelog...',
-        click: () => {
-          main.openChangelog();
-        },
-      },
       {
         type: 'separator',
       },
@@ -238,7 +244,30 @@ const macMenu = [
     ],
   },
   ...menuTemplate,
+  {
+    label: 'Help',
+    submenu: [
+      {
+        label: 'Guide...',
+        click: () => {
+          main.openSecondaryWindow('helpWindow');
+        },
+      },
+      {
+        label: 'Changelog...',
+        click: () => {
+          main.openSecondaryWindow('changelogWindow');
+        },
+      },
+    ],
+  },
   ...devMenu,
+  {
+    label: 'Donate',
+    click: () => {
+      electron.shell.openExternal('https://khalisfoundation.org/donate/');
+    },
+  },
 ];
 const menu = Menu.buildFromTemplate(process.platform === 'darwin' || process.platform === 'linux' ? macMenu : winMenu);
 if (process.platform === 'darwin' || process.platform === 'linux') {
@@ -381,5 +410,9 @@ module.exports = {
 
   'presenter-view': function presenterView() {
     updateViewerScale();
+  },
+
+  autoplay() {
+    global.core.search.checkAutoPlay();
   },
 };
